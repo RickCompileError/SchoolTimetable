@@ -18,6 +18,7 @@ public class GenericDemo {
 	GenericDemo(String filepath){
 		try {
 			Scanner sc = new Scanner(new FileInputStream(filepath));
+			popularity = new Popularity();
 			if (sc.hasNextLine())
 				this.popularitySize = Integer.parseInt(sc.nextLine());
 			while(sc.hasNextLine())
