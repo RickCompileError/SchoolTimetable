@@ -1,8 +1,6 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Generic {
-	Random rd = new Random();
 	Popularity popularity;
 	Popularity generation;
 	int popularitySize;
@@ -31,8 +29,8 @@ public class Generic {
 	void select() {
 		int val1, val2;
 		do {
-			val1 = rd.nextInt(bound);
-			val2 = rd.nextInt(bound);
+			val1 = MyRandom.rangeInt(bound);
+			val2 = MyRandom.rangeInt(bound);
 			// System.out.println("[Debug] val1 = " + val1 + " / val2 = " + val2);
 		}while(val1 == val2);
 		c1 = popularity.getCurriculum(val1);
@@ -40,7 +38,7 @@ public class Generic {
 	}
 
 	void crossover(){
-		int id = rd.nextInt(c1.size());
+		int id = MyRandom.rangeInt(c1.size());
 		ArrayList<Course> tmp = new ArrayList<>();
 		tmp.addAll(c1.courses.subList(0, id));
 		tmp.addAll(c2.courses.subList(id, c2.size()));
@@ -56,8 +54,8 @@ public class Generic {
 	}
 	
 	void crossover1() {
-		int start = rd.nextInt(c1.size());
-		int end = rd.nextInt(c1.size());
+		int start = MyRandom.rangeInt(c1.size());
+		int end = MyRandom.rangeInt(c1.size());
 		if (start>end) {
 			int tmp = start;
 			start = end;
@@ -80,10 +78,10 @@ public class Generic {
 	}
 
     void mutation() {
-        if(rd.nextInt(2) == 0) {
+        if(MyRandom.rangeInt(2) == 0) {
             for(int id = 0; id < offSpring.size(); id++) {
-                if(rd.nextInt(5) == 0 && !offSpring.getCourse(id).isFixed()) {
-                    int week = rd.nextInt(5) + 1, starttime = rd.nextInt(8) + 1;
+                if(MyRandom.rangeInt(5) == 0 && !offSpring.getCourse(id).isFixed()) {
+                    int week = MyRandom.rangeInt(1,5), starttime = MyRandom.rangeInt(1,8,5,offSpring.getCourse(id).hour);
                     offSpring.modify(id, week, starttime);
                 }
             }
