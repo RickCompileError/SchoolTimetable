@@ -5,11 +5,12 @@ public class CourseFactory {
 		String[] s = info.split(" ");
 		if(Integer.parseInt(s[0]) == 1) {
 			return new Course(true,
-					Integer.parseInt(s[2]),
-					"",
+					(Integer.parseInt(s[2])==1?true:false),
 					Integer.parseInt(s[3]),
+					"",
 					Integer.parseInt(s[4]),
-					Integer.parseInt(s[5]));
+					Integer.parseInt(s[5]),
+					Integer.parseInt(s[6]));
 		}
 		else {
 			Random rd = new Random();
@@ -19,11 +20,12 @@ public class CourseFactory {
 			start = rd.nextInt(8) + 1;
 			}while(week == 2 && start == 8);
 			return new Course(false,
-					Integer.parseInt(s[2]),
-					s[4],
+					(Integer.parseInt(s[2])==1?true:false),
+					Integer.parseInt(s[3]),
+					s[5],
 					week,
 					start,
-					start + Integer.parseInt(s[3]));
+					start + Integer.parseInt(s[4]));
 		}
 	}
 }
