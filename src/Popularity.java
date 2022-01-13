@@ -32,7 +32,7 @@ public class Popularity {
 		Iterator<Curriculum> i = set.iterator();
 		System.out.println("[Popularity] Print fitness value");
 		while (i.hasNext()) {
-			System.out.println("Fitness value " + i.next().getFitnessValue());
+			System.out.println("\tFitness value " + i.next().getFitnessValue());
 		}
 		System.out.println("[Popularity] Print fiteness value done");
 	}
