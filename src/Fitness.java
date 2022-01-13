@@ -47,7 +47,7 @@ public class Fitness {
 			if (c1.teacher.equals("賴") && c1.start>=5) fitnessValue += 10;
 			
 			// check class start at 1 or 5 lesson
-			if (c1.start==1 || (c1.start<=5 && 5<=c1.end)) fitnessValue -= 1;
+			if (c1.start==1 || (c1.start<=5 && 5<=c1.end)) fitnessValue -= 10;
 			
 			for (int j=i+1;j<courses.size();j++) {
 				c2 = courses.get(j);
