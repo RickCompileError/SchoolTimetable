@@ -45,6 +45,7 @@ public class GUI extends JFrame{
 	JScrollPane scrollPane5;
 	JButton b1;
 	JButton b2;
+	JButton b3;
 	JTextField textfield1;
 	int round = 0;
 	String[] columnNames = {"","一","二","三","四","五"};
@@ -117,6 +118,7 @@ public class GUI extends JFrame{
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
 					load(fc.getSelectedFile().getAbsolutePath());
 					b2.setEnabled(true);
+					b3.setEnabled(true);
 				}
 				else {
 					JOptionPane.showMessageDialog(null,
@@ -148,6 +150,24 @@ public class GUI extends JFrame{
 		});
 		panel.add(b2);
 
+		b3 = new JButton("重置");
+		b3.setEnabled(false);
+		b3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					load(filepath);
+				} catch (NumberFormatException exception){
+					JOptionPane.showMessageDialog(null,
+							"Input error",
+						    "Error",
+						    JOptionPane.ERROR_MESSAGE);
+					textfield1.setText("100");
+				}
+			}
+		});
+		panel.add(b3);
+		
 		textfield1 = new JTextField("100");
 		panel.add(textfield1);
 
@@ -169,6 +189,7 @@ public class GUI extends JFrame{
 				generic = new Generic(popularity.size());
 				popularity.printFitness();
 				printtable();
+				this.filepath = filepath;
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(null,
 						"FileNotFoundException",
