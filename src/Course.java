@@ -3,14 +3,15 @@ import java.util.Objects;
 public class Course {
 	boolean fixed, major;
 	String teacher;
-	int grade, week, start, end;
+	int grade, week, start, end, hour;
 
-	Course(boolean fixed, boolean major, int grade, String teacher, int week, int start, int end) {
+	Course(boolean fixed, boolean major, int grade, String teacher, int week, int hour, int start, int end) {
 		this.fixed = fixed;
 		this.major = major;
 		this.grade = grade;
 		this.teacher = teacher;
 		this.week = week;
+		this.hour = hour;
 		this.start = start;
 		this.end = end;
 	}
@@ -37,7 +38,8 @@ public class Course {
 	public String toString() {
 		return "Fixed: " + fixed + " / major: " + major + 
 				" / grade: " + grade + " / teacher: " + teacher + 
-				" / week: " + week + " / start: " + start + " / end: " + end;  
+				" / week: " + week + " / hour: " + hour + 
+				" / start: " + start + " / end: " + end;  
 	}
 	
 	@Override
@@ -53,12 +55,12 @@ public class Course {
 		Course c = (Course) obj;
 		
 		return (c.fixed==this.fixed) && (c.major==this.major) && (c.teacher.equals(this.teacher)) 
-				&& (c.grade==this.grade) && (c.week==this.week) && (c.start==this.start) 
-				&& (c.end==this.end);
+				&& (c.grade==this.grade) && (c.week==this.week) && (c.hour==this.hour) 
+				&& (c.start==this.start) && (c.end==this.end);
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(fixed,major,teacher,grade,week,start,end);
+		return Objects.hash(fixed,major,teacher,grade,week,hour,start,end);
 	}
 }
