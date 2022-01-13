@@ -24,7 +24,7 @@ public class CourseFactory {
 					s[5],
 					week,
 					start,
-					start + Integer.parseInt(s[4]));
+					start + Integer.parseInt(s[4]) - 1);
 		}
 	}
 }
