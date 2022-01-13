@@ -81,8 +81,11 @@ public class Generic {
         if(MyRandom.rangeInt(2) == 0) {
             for(int id = 0; id < offSpring.size(); id++) {
                 if(MyRandom.rangeInt(5) == 0 && !offSpring.getCourse(id).isFixed()) {
-                    int week = MyRandom.rangeInt(1,5), starttime = MyRandom.rangeInt(1,8,5,offSpring.getCourse(id).hour);
-                    offSpring.modify(id, week, starttime);
+                	do {
+                		int week = MyRandom.rangeInt(1,5);
+                		int starttime = MyRandom.rangeInt(1,8,5,offSpring.getCourse(id).hour);
+                		offSpring.modify(id, week, starttime);
+                	} while (offSpring.isConflict(offSpring.getCourse(id)));
                 }
             }
         }

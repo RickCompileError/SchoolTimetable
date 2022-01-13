@@ -33,8 +33,10 @@ public class Fitness {
 			// check if the time of the class can't be scheduled
 			Integer[][] time = notArrange.get(c1.teacher);
 			if (time!=null && 
-				((time[0][0]==c1.week && (time[0][1]<=c1.end || time[0][2]>=c1.start)) ||
-				(time[1][0]==c1.week && (time[1][1]<=c1.end || time[1][2]>=c1.start))))
+				((time[0][0]==c1.week && 
+				 ((time[0][1]<=c1.end && time[0][1]>=c1.start) || (time[0][2]>=c1.start && time[0][2]<=c1.end))) ||
+				 (time[1][0]==c1.week && 
+				 ((time[1][1]<=c1.end && time[1][1]>=c1.start) || (time[1][2]>=c1.start && time[1][2]<=c1.end)))))
 				fitnessValue -= 100;
 			
 			// check 黃 宜 徐 have class in Tuesday
@@ -50,15 +52,19 @@ public class Fitness {
 			for (int j=i+1;j<courses.size();j++) {
 				c2 = courses.get(j);
 				// check if c1 course and c2 course overlapping
-				if (c1.week==c2.week && (c1.end>=c2.start || c2.end>=c1.start)) {
-					// check if c1 or c2 is fixed course
+				if (c1.week==c2.week && 
+					((c1.start<=c2.end && c1.start>=c2.start) || (c1.end>=c2.start && c1.end<=c2.end))) {
+					// check if one or both of c1 and c2 is fixed course and same grade 
 					if ((c1.grade==c2.grade) && (c1.isFixed() || c2.isFixed())) fitnessValue -= 100;
+					
+					// check if one or both of c1 and c2 is major course and same grade
+					if ((c1.grade==c2.grade) && (c1.isMajor() || c2.isMajor())) fitnessValue -= 100; 
 					
 					// check if c1 and c2 are both major courses and grade are adjacent
 					if (Math.abs(c1.grade-c2.grade)==1 && (c1.isMajor() && c2.isMajor())) fitnessValue -= 25;
 					
 					// check if c1 and c2 are the same teacher
-					if (c1.teacher.equals(c2.teacher)) fitnessValue -= 10;
+					if (c1.teacher.equals(c2.teacher)) fitnessValue -= 100;
 				}
 			}
 		}

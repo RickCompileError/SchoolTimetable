@@ -3,6 +3,7 @@ import java.util.Objects;
 
 public class Curriculum implements Comparable<Curriculum> {
 	ArrayList<Course> courses = new ArrayList<>();
+	ArrayList<Course> fixedCourses = new ArrayList<>();
 	int fitnessValue;
 	
 	Curriculum(){
@@ -16,6 +17,7 @@ public class Curriculum implements Comparable<Curriculum> {
 	
 	void add(Course course) {
 		courses.add(course);
+		if (course.isFixed()) fixedCourses.add(course);
 	}
 
 	void modify(int id, int week, int starttime) {
@@ -36,6 +38,17 @@ public class Curriculum implements Comparable<Curriculum> {
 		return courses.get(id);
 	}
 
+	boolean isConflict(Course course) {
+		if (course.isFixed()) return false;
+		for (Course c : fixedCourses) {
+			if ((c.grade==course.grade) && (c.week==course.week) &&
+				((c.start<=course.end && c.start>=course.start) ||
+				 (c.end>=course.start && c.end<=course.end)))
+				return true;
+		}
+		return false;
+	}
+	
 	int size() {
 		return courses.size();
 	}

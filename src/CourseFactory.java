@@ -7,14 +7,14 @@ public class CourseFactory {
 					Integer.parseInt(s[3]),
 					"",
 					Integer.parseInt(s[4]),
-					Integer.parseInt(s[6])-Integer.parseInt(s[5]+1),
+					Integer.parseInt(s[6])-Integer.parseInt(s[5])+1,
 					Integer.parseInt(s[5]),
 					Integer.parseInt(s[6]));
 		} else {
 			int week, start;
 			do {
 				week = MyRandom.rangeInt(1, 5);
-				start = MyRandom.rangeInt(1, 5, 5, Integer.parseInt(s[4])-1);
+				start = MyRandom.rangeInt(1, 8, 5, Integer.parseInt(s[4])-1);
 			} while(week == 2 && start == 8);
 			return new Course(false,
 					(Integer.parseInt(s[2])==1?true:false),

@@ -13,7 +13,11 @@ public class CurriculumFactory {
 	Curriculum getCurriculum(){
 		Curriculum curriculum = new Curriculum();
 		for(int i = 0; i < size; i++) {
-			curriculum.add(coursefactory.getCourse(infos.get(i)));
+			Course tmp = coursefactory.getCourse(infos.get(i));
+			// avoid course tmp overlapping with fixed courses
+			while (curriculum.isConflict(tmp))
+				tmp = coursefactory.getCourse(infos.get(i));
+			curriculum.add(tmp);
 		}
 		curriculum.calcFitness();
 		return curriculum;
