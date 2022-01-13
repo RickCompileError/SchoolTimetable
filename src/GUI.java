@@ -1,5 +1,3 @@
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -8,14 +6,13 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,7 +23,7 @@ import javax.swing.JTextField;
 public class GUI extends JFrame{
 	String filepath;
 	LinkedList<String> CourseData;
-	Popularity popularity = new Popularity();
+	Popularity popularity;
 	int popularitySize;
 	Generic generic;
 	CurriculumFactory curriculumFactory;
@@ -47,6 +44,7 @@ public class GUI extends JFrame{
 	JButton b2;
 	JButton b3;
 	JTextField textfield1;
+	JLabel label1;
 	int round = 0;
 	String[] columnNames = {"","一","二","三","四","五"};
 	
@@ -171,6 +169,9 @@ public class GUI extends JFrame{
 		textfield1 = new JTextField("100");
 		panel.add(textfield1);
 
+		label1 = new JLabel("Fitness value = N/A");
+		panel.add(label1);
+
 		this.add(panel, c);
 	}
 
@@ -184,6 +185,7 @@ public class GUI extends JFrame{
 					CourseData.add(sc.nextLine());
 				sc.close();
 				curriculumFactory = new CurriculumFactory(CourseData.size(), CourseData);
+				popularity = new Popularity();
 				while (popularity.size()<popularitySize)
 					popularity.add(curriculumFactory.getCurriculum());
 				generic = new Generic(popularity.size());
@@ -286,11 +288,11 @@ public class GUI extends JFrame{
 				//System.out.println(s[1] + ": course.grade=" + course.grade + "/course.week=" + course.week + "/j = " + j);
 				if(data[course.grade - 1][j - 1][course.week] != "")
 					if(!data[course.grade - 1][j - 1][course.week].contains("(多堂)")) 
-						data[course.grade - 1][j - 1][course.week] = "(多堂)\n" + data[course.grade - 1][j - 1][course.week] + "&" + s[1];
+						data[course.grade - 1][j - 1][course.week] = "(多堂)\n" + data[course.grade - 1][j - 1][course.week] + "&" + (course.isMajor() ? "(必)" : "(選)") + s[1] + (course.isFixed() ? "" : "[" + s[5] + "]");
 					else
-						data[course.grade - 1][j - 1][course.week] += "&" + s[1];
+						data[course.grade - 1][j - 1][course.week] += "&" + (course.isFixed() ? "(必)" : "(選)") + s[1] + (course.isFixed() ? "" : "[" + s[5] + "]");
 				else
-					data[course.grade - 1][j - 1][course.week] = s[1];
+					data[course.grade - 1][j - 1][course.week] = (course.isMajor() ? "(必)" : "(選)") + s[1] + (course.isFixed() ? "" : "[" + s[5] + "]");
 			}
 		}
 		tabbedPane.removeAll();
@@ -300,7 +302,8 @@ public class GUI extends JFrame{
 		build_table3(data[2]);
 		build_table4(data[3]);
 		build_table5(data[4]);
-		
+
+		label1.setText("Fitness value = " + c.getFitnessValue()); 
 	}
 
 	Curriculum getBest() {
