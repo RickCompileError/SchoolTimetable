@@ -28,7 +28,7 @@ public class Fitness {
 			c1 = courses.get(i);
 			
 			// count how many hours of lessons a day students have to attend
-			hour[c1.grade][c1.week] += c1.end - c1.start + 1;
+			hour[c1.grade][c1.week] += c1.hour;
 			
 			// check if the time of the class can't be scheduled
 			Integer[][] time = notArrange.get(c1.teacher);
