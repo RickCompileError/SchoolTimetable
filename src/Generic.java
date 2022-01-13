@@ -79,10 +79,14 @@ public class Generic {
 		generation.add(offSpring);
 	}
 
-	void mutation() {
-		if(rd.nextInt(10) == 0) {
-			int id = rd.nextInt(c1.size()), week = rd.nextInt(5) + 1, starttime = rd.nextInt(8) + 1;
-			offSpring.modify(id, week, starttime);
-		}
-	}
+    void mutation() {
+        if(rd.nextInt(2) == 0) {
+            for(int id = 0; id < offSpring.size(); id++) {
+                if(rd.nextInt(5) == 0 && !offSpring.getCourse(id).isFixed()) {
+                    int week = rd.nextInt(5) + 1, starttime = rd.nextInt(8) + 1;
+                    offSpring.modify(id, week, starttime);
+                }
+            }
+        }
+    }
 }
