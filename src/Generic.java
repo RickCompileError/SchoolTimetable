@@ -33,7 +33,7 @@ public class Generic {
 		do {
 			val1 = rd.nextInt(bound);
 			val2 = rd.nextInt(bound);
-			System.out.println("[Debug] val1 = " + val1 + " / val2 = " + val2);
+			// System.out.println("[Debug] val1 = " + val1 + " / val2 = " + val2);
 		}while(val1 == val2);
 		c1 = popularity.getCurriculum(val1);
 		c2 = popularity.getCurriculum(val2);
