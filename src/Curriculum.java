@@ -10,8 +10,9 @@ public class Curriculum implements Comparable<Curriculum> {
 		
 	}
 	
-	Curriculum(ArrayList<Course> courses){
+	Curriculum(ArrayList<Course> courses, ArrayList<Course> fixedCourses){
 		this.courses = courses;
+		this.fixedCourses = fixedCourses;
 		calcFitness();
 	}
 	

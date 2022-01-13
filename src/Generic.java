@@ -42,13 +42,13 @@ public class Generic {
 		ArrayList<Course> tmp = new ArrayList<>();
 		tmp.addAll(c1.courses.subList(0, id));
 		tmp.addAll(c2.courses.subList(id, c2.size()));
-		offSpring = new Curriculum(tmp);
+		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
 		generation.add(offSpring);
 		tmp.clear();
 		tmp.addAll(c2.courses.subList(0, id));
 		tmp.addAll(c1.courses.subList(id, c1.size()));
-		offSpring = new Curriculum(tmp);
+		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
 		generation.add(offSpring);
 	}
@@ -65,14 +65,14 @@ public class Generic {
 		tmp.addAll(c1.courses.subList(0,start));
 		tmp.addAll(c2.courses.subList(start, end));
 		tmp.addAll(c1.courses.subList(end, c1.size()));
-		offSpring = new Curriculum(tmp);
+		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
 		generation.add(offSpring);
 		tmp.clear();
 		tmp.addAll(c2.courses.subList(0,start));
 		tmp.addAll(c1.courses.subList(start, end));
 		tmp.addAll(c2.courses.subList(end, c2.size()));
-		offSpring = new Curriculum(tmp);
+		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
 		generation.add(offSpring);
 	}
