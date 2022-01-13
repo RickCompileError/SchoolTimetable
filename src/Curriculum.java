@@ -30,12 +30,12 @@ public class Curriculum implements Comparable<Curriculum> {
 		for (int i=0;i<courses.size();i++) {
 			c1 = courses.get(i);
 			if ((c1.teacher.equals("¶À") || c1.teacher.equals("©y") || c1.teacher.equals("®}"))
-					&& c1.week==2) fitnessValue = 0;
+					&& c1.week==2) fitnessValue -= 100;
 			if (c1.start==1 || (c1.start<=5 && 5<=c1.end)) fitnessValue -= 1;
 			for (int j=i+1;j<courses.size();j++) {
 				c2 = courses.get(j);
 				if (c1.week==c2.week && (c1.end>=c2.start || c2.end>=c1.start)) {
-					if ((c1.grade==c2.grade) && (c1.fixed || c2.fixed)) fitnessValue = 0;
+					if ((c1.grade==c2.grade) && (c1.fixed || c2.fixed)) fitnessValue -= 100;
 					if (c1.teacher.equals(c2.teacher)) fitnessValue -= 1;
 				}
 			}

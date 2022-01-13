@@ -4,6 +4,7 @@ import java.util.Random;
 public class Generic {
 	Random rd = new Random();
 	Popularity popularity;
+	Popularity generation;
 	int popularitySize;
 	int bound;
 	Curriculum c1;
@@ -16,15 +17,13 @@ public class Generic {
 	}
 	
 	Popularity nextGeneration(Popularity popularity) {
-		Popularity generation = new Popularity();
+		generation = new Popularity();
 		this.popularity = popularity;
 		for (int i=0;i<popularitySize*(1/10.0);i++)
 			generation.add(popularity.getCurriculum(i));
 		while (generation.size()<popularitySize) {
 			select();
-			crossover();
-			mutation();
-			generation.add(offSpring);
+			crossover1();
 		}
 		return generation;
 	}
@@ -34,7 +33,7 @@ public class Generic {
 		do {
 			val1 = rd.nextInt(bound);
 			val2 = rd.nextInt(bound);
-			//System.out.println("[Debug] val1 = " + val1 + " / val2 = " + val2);
+			System.out.println("[Debug] val1 = " + val1 + " / val2 = " + val2);
 		}while(val1 == val2);
 		c1 = popularity.getCurriculum(val1);
 		c2 = popularity.getCurriculum(val2);
@@ -46,6 +45,38 @@ public class Generic {
 		tmp.addAll(c1.courses.subList(0, id));
 		tmp.addAll(c2.courses.subList(id, c2.size()));
 		offSpring = new Curriculum(tmp);
+		mutation();
+		generation.add(offSpring);
+		tmp.clear();
+		tmp.addAll(c2.courses.subList(0, id));
+		tmp.addAll(c1.courses.subList(id, c1.size()));
+		offSpring = new Curriculum(tmp);
+		mutation();
+		generation.add(offSpring);
+	}
+	
+	void crossover1() {
+		int start = rd.nextInt(c1.size());
+		int end = rd.nextInt(c1.size());
+		if (start>end) {
+			int tmp = start;
+			start = end;
+			end = tmp;
+		}
+		ArrayList<Course> tmp = new ArrayList<>();
+		tmp.addAll(c1.courses.subList(0,start));
+		tmp.addAll(c2.courses.subList(start, end));
+		tmp.addAll(c1.courses.subList(end, c1.size()));
+		offSpring = new Curriculum(tmp);
+		mutation();
+		generation.add(offSpring);
+		tmp.clear();
+		tmp.addAll(c2.courses.subList(0,start));
+		tmp.addAll(c1.courses.subList(start, end));
+		tmp.addAll(c2.courses.subList(end, c2.size()));
+		offSpring = new Curriculum(tmp);
+		mutation();
+		generation.add(offSpring);
 	}
 
 	void mutation() {
