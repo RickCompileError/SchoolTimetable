@@ -15,6 +15,17 @@ public class Course {
 		this.start = start;
 		this.end = end;
 	}
+	
+	Course(Course that) {
+		this.fixed = that.fixed;
+		this.major = that.major;
+		this.grade = that.grade;
+		this.teacher = that.teacher;
+		this.week = that.week;
+		this.hour = that.hour;
+		this.start = that.start;
+		this.end = that.end;
+	}
 
 	boolean isFixed() {
 		return fixed;

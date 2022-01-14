@@ -12,7 +12,7 @@ public class Popularity {
 	}
 
 	Curriculum getBest() {
-		return set.first();
+		return new Curriculum(set.first());
 	}
 
 	Curriculum getCurriculum(int n) {
@@ -21,7 +21,7 @@ public class Popularity {
 		Curriculum c = new Curriculum();
 		while( n-- >= 0)
 			c = i.next();
-		return c;
+		return new Curriculum(c);
 	}
 
 	int size() {

@@ -16,6 +16,14 @@ public class Curriculum implements Comparable<Curriculum> {
 		calcFitness();
 	}
 	
+	Curriculum(Curriculum that) {
+		for (int i=0;i<that.courses.size();i++) {
+			this.courses.add(new Course(that.courses.get(i)));
+		}
+		this.fixedCourses = that.fixedCourses;
+		calcFitness();
+	}
+	
 	void add(Course course) {
 		courses.add(course);
 		if (course.isFixed()) fixedCourses.add(course);
@@ -36,7 +44,7 @@ public class Curriculum implements Comparable<Curriculum> {
 	}
 
 	Course getCourse(int id) {
-		return courses.get(id);
+		return new Course(courses.get(id));
 	}
 
 	boolean isConflict(Course course) {
