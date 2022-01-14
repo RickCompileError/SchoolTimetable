@@ -46,8 +46,11 @@ public class Fitness {
 			// check if 賴 course is in afternoon
 			if (c1.teacher.equals("賴") && c1.start>=5) fitnessValue += 10;
 			
-			// check class start at 1 or 5 lesson
-			if (c1.start==1 || (c1.start<=5 && 5<=c1.end)) fitnessValue -= 10;
+			// check course with 3 HR should start at 2 or 6
+			if (!c1.isFixed() && c1.end - c1.start + 1== 3 && !(c1.start == 2 || c1.start == 6)) fitnessValue -= 30;
+			
+			// check course with 2 HR should start at 3 or 6 or 8
+			if (!c1.isFixed() && c1.end - c1.start + 1== 2 && !(c1.start == 3 || c1.start == 6 || c1.start == 8)) fitnessValue -= 30;
 			
 			for (int j=i+1;j<courses.size();j++) {
 				c2 = courses.get(j);
@@ -61,10 +64,13 @@ public class Fitness {
 					if ((c1.grade==c2.grade) && (c1.isMajor() || c2.isMajor())) fitnessValue -= 100; 
 					
 					// check if c1 and c2 are both major courses and grade are adjacent
-					if (Math.abs(c1.grade-c2.grade)==1 && (c1.isMajor() && c2.isMajor())) fitnessValue -= 25;
+					if (!(c1.isFixed() && c2.isFixed()) && Math.abs(c1.grade-c2.grade)==1 && (c1.isMajor() && c2.isMajor())) fitnessValue -= 100;
+					
+					// check electives in same grade
+					if ((c1.grade==c2.grade) && (!c1.isMajor() && !c2.isMajor())) fitnessValue -= 30;
 					
 					// check if c1 and c2 are the same teacher
-					if (c1.teacher.equals(c2.teacher)) fitnessValue -= 100;
+					if (!(c1.isFixed() && c2.isFixed()) && c1.teacher.equals(c2.teacher)) fitnessValue -= 100;
 				}
 			}
 		}
