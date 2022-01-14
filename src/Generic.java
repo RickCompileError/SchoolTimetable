@@ -17,11 +17,12 @@ public class Generic {
 	Popularity nextGeneration(Popularity popularity) {
 		generation = new Popularity();
 		this.popularity = popularity;
-		for (int i=0;i<popularitySize*(1/10.0);i++)
+		for (int i=0;i<popularitySize*(1/10.0);i++) {
 			generation.add(popularity.getCurriculum(i));
+		}
 		while (generation.size()<popularitySize) {
 			select();
-			crossover1();
+			crossover();
 		}
 		return generation;
 	}
@@ -36,24 +37,8 @@ public class Generic {
 		c1 = popularity.getCurriculum(val1);
 		c2 = popularity.getCurriculum(val2);
 	}
-
-	void crossover(){
-		int id = MyRandom.rangeInt(c1.size());
-		ArrayList<Course> tmp = new ArrayList<>();
-		tmp.addAll(c1.courses.subList(0, id));
-		tmp.addAll(c2.courses.subList(id, c2.size()));
-		offSpring = new Curriculum(tmp,c1.fixedCourses);
-		mutation();
-		generation.add(offSpring);
-		tmp.clear();
-		tmp.addAll(c2.courses.subList(0, id));
-		tmp.addAll(c1.courses.subList(id, c1.size()));
-		offSpring = new Curriculum(tmp,c1.fixedCourses);
-		mutation();
-		generation.add(offSpring);
-	}
 	
-	void crossover1() {
+	void crossover() {
 		int start = MyRandom.rangeInt(c1.size());
 		int end = MyRandom.rangeInt(c1.size());
 		if (start>end) {
@@ -62,18 +47,26 @@ public class Generic {
 			end = tmp;
 		}
 		ArrayList<Course> tmp = new ArrayList<>();
-		tmp.addAll(c1.courses.subList(0,start));
-		tmp.addAll(c2.courses.subList(start, end));
-		tmp.addAll(c1.courses.subList(end, c1.size()));
+		for (int i=0;i<start;i++)
+			tmp.add(c1.getCourse(i));
+		for (int i=start;i<end;i++)
+			tmp.add(c2.getCourse(i));
+		for (int i=end;i<c1.size();i++)
+			tmp.add(c1.getCourse(i));
 		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
+		offSpring.calcFitness();
 		generation.add(offSpring);
-		tmp.clear();
-		tmp.addAll(c2.courses.subList(0,start));
-		tmp.addAll(c1.courses.subList(start, end));
-		tmp.addAll(c2.courses.subList(end, c2.size()));
+		tmp = new ArrayList<>();
+		for (int i=0;i<start;i++)
+			tmp.add(c2.getCourse(i));
+		for (int i=start;i<end;i++)
+			tmp.add(c1.getCourse(i));
+		for (int i=end;i<c1.size();i++)
+			tmp.add(c2.getCourse(i));
 		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
+		offSpring.calcFitness();
 		generation.add(offSpring);
 	}
 
