@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -43,6 +45,7 @@ public class GUI extends JFrame{
 	JButton b1;
 	JButton b2;
 	JButton b3;
+	JButton b4;
 	JTextField textfield1;
 	JLabel label1;
 	int round = 0;
@@ -117,6 +120,7 @@ public class GUI extends JFrame{
 					load(fc.getSelectedFile().getAbsolutePath());
 					b2.setEnabled(true);
 					b3.setEnabled(true);
+					b4.setEnabled(true);
 				}
 				else {
 					JOptionPane.showMessageDialog(null,
@@ -153,18 +157,38 @@ public class GUI extends JFrame{
 		b3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				load(filepath);
+			}
+		});
+		panel.add(b3);
+		
+		b4 = new JButton("儲存");
+		b4.setEnabled(false);
+		b4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				try {
-					load(filepath);
-				} catch (NumberFormatException exception){
+					PrintWriter writer = new PrintWriter("school_table.txt","UTF-8");
+					Curriculum curriculum = getBest();
+					for (int i=0;i<curriculum.size();i++) {
+						writer.println(curriculum.getCourse(i).toString());
+					}
+					writer.close();
 					JOptionPane.showMessageDialog(null,
-							"Input error",
-						    "Error",
-						    JOptionPane.ERROR_MESSAGE);
+							"Curriculum save to school_table.txt successfully",
+							"Success",
+							JOptionPane.INFORMATION_MESSAGE);
+					textfield1.setText("100");
+				} catch (IOException exception) {
+					JOptionPane.showMessageDialog(null,
+							"Write I/O error",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
 					textfield1.setText("100");
 				}
 			}
 		});
-		panel.add(b3);
+		panel.add(b4);
 		
 		textfield1 = new JTextField("100");
 		panel.add(textfield1);
