@@ -146,7 +146,7 @@ public class GUI extends JFrame{
 							"Input error",
 						    "Error",
 						    JOptionPane.ERROR_MESSAGE);
-					textfield1.setText("100");
+					textfield1.setText("1000");
 				}
 			}
 		});
@@ -178,19 +178,17 @@ public class GUI extends JFrame{
 							"Curriculum save to school_table.txt successfully",
 							"Success",
 							JOptionPane.INFORMATION_MESSAGE);
-					textfield1.setText("100");
 				} catch (IOException exception) {
 					JOptionPane.showMessageDialog(null,
 							"Write I/O error",
 							"Error",
 							JOptionPane.ERROR_MESSAGE);
-					textfield1.setText("100");
 				}
 			}
 		});
 		panel.add(b4);
 		
-		textfield1 = new JTextField("100");
+		textfield1 = new JTextField("1000");
 		panel.add(textfield1);
 
 		label1 = new JLabel("Fitness value = N/A");
