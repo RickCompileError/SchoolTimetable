@@ -2,11 +2,12 @@ import java.util.Objects;
 
 public class Course {
 	boolean fixed, major;
-	String teacher;
+	String className, teacher;
 	int grade, week, start, end, hour;
 
-	Course(boolean fixed, boolean major, int grade, String teacher, int week, int hour, int start, int end) {
+	Course(boolean fixed, String className, boolean major, int grade, String teacher, int week, int hour, int start, int end) {
 		this.fixed = fixed;
+		this.className = className;
 		this.major = major;
 		this.grade = grade;
 		this.teacher = teacher;
@@ -18,6 +19,7 @@ public class Course {
 	
 	Course(Course that) {
 		this.fixed = that.fixed;
+		this.className = that.className;
 		this.major = that.major;
 		this.grade = that.grade;
 		this.teacher = that.teacher;
@@ -47,10 +49,16 @@ public class Course {
 
 	@Override
 	public String toString() {
-		return "Fixed: " + fixed + " / major: " + major + 
+		return "Fixed: " + fixed + " / class name: " + className + " / major: " + major + 
 				" / grade: " + grade + " / teacher: " + teacher + 
 				" / week: " + week + " / hour: " + hour + 
 				" / start: " + start + " / end: " + end;  
+	}
+	
+	public String saveString() {
+		return "1," + className + "," + (major?"1":"0") + "," +
+				String.valueOf(grade) + "," + String.valueOf(week) + "," +
+				String.valueOf(start) + "," + String.valueOf(end) + "," + teacher;
 	}
 	
 	@Override
@@ -67,11 +75,11 @@ public class Course {
 		
 		return (c.fixed==this.fixed) && (c.major==this.major) && (c.teacher.equals(this.teacher)) 
 				&& (c.grade==this.grade) && (c.week==this.week) && (c.hour==this.hour) 
-				&& (c.start==this.start) && (c.end==this.end);
+				&& (c.start==this.start) && (c.end==this.end) && (c.className.equals(this.className));
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(fixed,major,teacher,grade,week,hour,start,end);
+		return Objects.hash(fixed,className,major,teacher,grade,week,hour,start,end);
 	}
 }

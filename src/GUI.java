@@ -3,11 +3,15 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -110,7 +114,7 @@ public class GUI extends JFrame{
 		JPanel panel = new JPanel(new GridLayout(0,1));
 		c.weightx = 0.25;
 
-		b1 = new JButton("載入課表");
+		b1 = new JButton("載入課表 (txt/csv)");
 		b1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -168,14 +172,21 @@ public class GUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					PrintWriter writer = new PrintWriter("school_table.txt","UTF-8");
+					FileOutputStream fos = new FileOutputStream("school_table.csv");
+					// csv file need to write BOM header to indicate that encoding of the file is utf-8
+					fos.write(new byte[] {(byte)0xEF, (byte)0xBB, (byte)0xBF});
+					OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+					BufferedWriter bw = new BufferedWriter(osw);
+					bw.write("Population\n1\n");
+					bw.write("Fixed (1),Class name,major (0/1),grade (1~5),week (1~5),start,end,teacher name\n");
 					Curriculum curriculum = getBest();
 					for (int i=0;i<curriculum.size();i++) {
-						writer.println(curriculum.getCourse(i).toString());
+						bw.write(curriculum.getCourse(i).saveString());
+						bw.newLine();
 					}
-					writer.close();
+					bw.close();
 					JOptionPane.showMessageDialog(null,
-							"Curriculum save to school_table.txt successfully",
+							"Curriculum save to school_table.csv successfully",
 							"Success",
 							JOptionPane.INFORMATION_MESSAGE);
 				} catch (IOException exception) {
@@ -198,13 +209,30 @@ public class GUI extends JFrame{
 	}
 
 	private void load(String filepath) {
+			if (!filepath.matches(".*\\.(txt|csv)")) {
+				JOptionPane.showMessageDialog(null,
+						"Illegal file, only accept txt and csv.",
+					    "Error",
+					    JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
+			}
 			try {
-				Scanner sc = new Scanner(new FileInputStream(filepath));
+				Scanner sc = new Scanner(new File(filepath),StandardCharsets.UTF_8);
 				CourseData = new LinkedList<>();
-				if (sc.hasNextLine())
-					this.popularitySize = Integer.parseInt(sc.nextLine());
-				while(sc.hasNextLine())
-					CourseData.add(sc.nextLine());
+				while (sc.hasNextLine()) {
+					String spl = sc.nextLine();
+					if (spl.matches(".*Population.*")) {
+						spl = sc.nextLine();
+						this.popularitySize = Integer.parseInt(spl.replaceAll(",",""));
+					} else {
+						try {
+							Integer.parseInt(spl.substring(0,1));
+						} catch (NumberFormatException nfe) {
+							continue;
+						}
+						CourseData.add(spl.replaceAll(",", " "));
+					}
+				}
 				sc.close();
 				curriculumFactory = new CurriculumFactory(CourseData.size(), CourseData);
 				popularity = new Popularity();
@@ -220,9 +248,15 @@ public class GUI extends JFrame{
 					    "Error",
 					    JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,
+						"IOException",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
+				System.exit(1);
 			}
 	}
-
+	
 	private void run() {
 		for (int i=1;i<=round;i++) {
 			popularity = generic.nextGeneration(popularity);
