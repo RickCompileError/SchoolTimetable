@@ -43,4 +43,4 @@ Population
 ## Notice
 - **compile.cmd** can compile the project and generate jar file named jar.jar
 - This project can only accept csv and txt file
-- Format of the input is limited, example can refer to input.txt & Example.csv
+- Input format is limited, example can refer to input.txt & Example.csv
