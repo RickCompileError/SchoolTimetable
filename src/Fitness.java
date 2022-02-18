@@ -34,9 +34,9 @@ public class Fitness {
 			Integer[][] time = notArrange.get(c1.teacher);
 			if (time!=null && 
 				((time[0][0]==c1.week && 
-				 ((time[0][1]<=c1.end && time[0][1]>=c1.start) || (time[0][2]>=c1.start && time[0][2]<=c1.end))) ||
+				 (Math.min(time[0][2],c1.end) - Math.max(time[0][1], c1.start) >= 0)) ||
 				 (time[1][0]==c1.week && 
-				 ((time[1][1]<=c1.end && time[1][1]>=c1.start) || (time[1][2]>=c1.start && time[1][2]<=c1.end)))))
+				 (Math.min(time[0][2],c1.end) - Math.max(time[0][1], c1.start) >= 0))))
 				fitnessValue -= 100;
 			
 			// check 黃 宜 徐 have class in Tuesday
@@ -47,10 +47,10 @@ public class Fitness {
 			if (c1.teacher.equals("賴") && c1.start>=5) fitnessValue += 10;
 			
 			// check course with 3 HR should start at 2 or 6
-			if (!c1.isFixed() && c1.end - c1.start + 1== 3 && !(c1.start == 2 || c1.start == 6)) fitnessValue -= 30;
+			if (!c1.isFixed() && c1.end - c1.start + 1 == 3 && !(c1.start == 2 || c1.start == 6)) fitnessValue -= 30;
 			
 			// check course with 2 HR should start at 3 or 6 or 8
-			if (!c1.isFixed() && c1.end - c1.start + 1== 2 && !(c1.start == 3 || c1.start == 6 || c1.start == 8)) fitnessValue -= 30;
+			if (!c1.isFixed() && c1.end - c1.start + 1 == 2 && !(c1.start == 3 || c1.start == 6 || c1.start == 8)) fitnessValue -= 30;
 			
 			for (int j=i+1;j<courses.size();j++) {
 				c2 = courses.get(j);

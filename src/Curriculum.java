@@ -51,8 +51,7 @@ public class Curriculum implements Comparable<Curriculum> {
 		if (course.isFixed()) return false;
 		for (Course c : fixedCourses) {
 			if ((c.grade==course.grade) && (c.week==course.week) &&
-				((c.start<=course.end && c.start>=course.start) ||
-				 (c.end>=course.start && c.end<=course.end)))
+				(Math.min(c.end, course.end) - Math.max(c.start, course.start) >= 0))
 				return true;
 		}
 		return false;
