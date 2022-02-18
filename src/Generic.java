@@ -71,14 +71,16 @@ public class Generic {
 	}
 
     void mutation() {
+    	// 50% mutate
         if(MyRandom.rangeInt(2) == 0) {
             for(int id = 0; id < offSpring.size(); id++) {
+            	// 20% element mutate, and element must not fixed class
                 if(MyRandom.rangeInt(5) == 0 && !offSpring.getCourse(id).isFixed()) {
                 	do {
                 		int week = MyRandom.rangeInt(1,5);
-                		int starttime = MyRandom.rangeInt(1,8,5,offSpring.getCourse(id).hour);
+                		int starttime = MyRandom.rangeInt(1,8,new int[]{5,10},offSpring.getCourse(id).hour);
                 		offSpring.modify(id, week, starttime);
-                	} while (offSpring.isConflict(offSpring.getCourse(id)));
+                	} while (offSpring.isConflict(offSpring.getCourse(id))); // check if new class time is conflict
                 }
             }
         }
