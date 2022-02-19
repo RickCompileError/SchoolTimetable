@@ -21,7 +21,7 @@ public class Fitness {
 			Scanner sc = new Scanner(new File(filepath),StandardCharsets.UTF_8);
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
-				if (line.matches(".*Administration.*")) {
+				if (line.matches(".*Administrator.*")) {
 					line = sc.nextLine();
 					admin = line.split(",| ");
 				} else if (line.matches(".*Forbidden.*")) {

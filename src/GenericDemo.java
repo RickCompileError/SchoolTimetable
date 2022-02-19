@@ -24,9 +24,9 @@ public class GenericDemo {
 			while(sc.hasNextLine())
 				CourseData.add(sc.nextLine());
 			curriculumFactory = new CurriculumFactory(CourseData.size(), CourseData);
+			generic = new Generic(popularitySize, filepath);
 			while (popularity.size()<popularitySize)
 				popularity.add(curriculumFactory.getCurriculum());
-			generic = new Generic(popularity.size());
 			popularity.printFitness();
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null,
