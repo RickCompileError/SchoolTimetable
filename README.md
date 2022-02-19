@@ -25,7 +25,7 @@ git clone https://github.com/RickCompileError/SchoolTimetable.git
 - total hour (2~3 hour)
 - <> : a replacement is to be made
 - \* : at least 0 or more
-- + : at least 1 or more
+- \+ : at least 1 or more
 ### Format
 delimiter can use ',' or ' '
 ```txt
