@@ -1,25 +1,61 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class Fitness {
 	
-	static HashMap<String,Integer[][]> notArrange;
+	HashMap<String,Integer[][]> notArrange;
+	String[] admin;
 	
-	static {
+	public Fitness(String filepath) {
 		notArrange = new HashMap<>();
-		notArrange.put("王", new Integer[][] {{2,1,4},{5,6,9}});
-		notArrange.put("賴", new Integer[][] {{2,1,4},{3,1,4}});
-		notArrange.put("孔", new Integer[][] {{1,1,4},{5,1,4}});
-		notArrange.put("顧", new Integer[][] {{5,6,9},{5,1,4}});
-		notArrange.put("張", new Integer[][] {{1,1,4},{5,1,4}});
-		notArrange.put("黃", new Integer[][] {{5,1,4},{5,6,9}});
-		notArrange.put("徐", new Integer[][] {{1,1,4},{5,6,9}});
-		notArrange.put("宜", new Integer[][] {{1,1,4},{5,6,9}});
-		notArrange.put("宗", new Integer[][] {{4,6,9},{5,6,9}});
+		try {
+			Scanner sc = new Scanner(new File(filepath),StandardCharsets.UTF_8);
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				if (line.matches(".*Administration.*")) {
+					line = sc.nextLine();
+					admin = line.split(",| ");
+				} else if (line.matches(".*Forbidden.*")) {
+					while (true) {
+						line = sc.nextLine();
+						if (line.matches(".*Fixed.*")) break;
+						String[] spl = line.split(",| ");
+						Integer[][] d = new Integer[(spl.length-1)/3][3];
+						for (int i=0;i*3+1<spl.length;i++) {
+							d[i][0] = Integer.parseInt(spl[i*3+1]);
+							d[i][1] = Integer.parseInt(spl[i*3+2]);
+							d[i][2] = Integer.parseInt(spl[i*3+3]);
+						}
+						notArrange.put(spl[0], d);
+					}
+				}
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null,
+					"FileNotFoundException",
+				    "Error",
+				    JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,
+					"IOException",
+					"Error",
+					JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
 	}
 	
-	static int getValue(Curriculum curriculum) {
+	public int getValue(Curriculum curriculum) {
 		ArrayList<Course> courses = curriculum.courses;
 		int fitnessValue = 100;
 		Course c1, c2;
@@ -39,9 +75,10 @@ public class Fitness {
 				 (Math.min(time[0][2],c1.end) - Math.max(time[0][1], c1.start) >= 0))))
 				fitnessValue -= 100;
 			
-			// check 黃 宜 徐 have class in Tuesday
-			if ((c1.teacher.equals("黃") || c1.teacher.equals("宜") || c1.teacher.equals("徐"))
-					&& c1.week==2) fitnessValue -= 100;
+			// check if admin have class in Tuesday
+			for (String a: admin) {
+				if (c1.teacher.equals(a) && c1.week == 2) fitnessValue -= 100;
+			}
 			
 			// check if 賴 course is in afternoon
 			if (c1.teacher.equals("賴") && c1.start>=5) fitnessValue += 10;
@@ -83,7 +120,7 @@ public class Fitness {
 		return fitnessValue;
 	}
 	
-	static void print() {
+	public void print() {
 		for (Map.Entry<String,Integer[][]> entry : notArrange.entrySet()) {
 			System.out.print(entry.getKey() + " ");
 			for (Integer[] i : entry.getValue()) {

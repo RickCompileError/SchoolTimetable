@@ -19,7 +19,6 @@ public class CurriculumFactory {
 				tmp = coursefactory.getCourse(infos.get(i));
 			curriculum.add(tmp);
 		}
-		curriculum.calcFitness();
 		return curriculum;
 	}
 }

@@ -13,7 +13,6 @@ public class Curriculum implements Comparable<Curriculum> {
 	Curriculum(ArrayList<Course> courses, ArrayList<Course> fixedCourses){
 		this.courses = courses;
 		this.fixedCourses = fixedCourses;
-		calcFitness();
 	}
 	
 	Curriculum(Curriculum that) {
@@ -21,7 +20,7 @@ public class Curriculum implements Comparable<Curriculum> {
 			this.courses.add(new Course(that.courses.get(i)));
 		}
 		this.fixedCourses = that.fixedCourses;
-		calcFitness();
+		this.fitnessValue = that.fitnessValue;
 	}
 	
 	void add(Course course) {
@@ -32,11 +31,10 @@ public class Curriculum implements Comparable<Curriculum> {
 	void modify(int id, int week, int starttime) {
 		courses.get(id).setweek(week);
 		courses.get(id).setstarttime(starttime);
-		calcFitness();
 	}
 
-	void calcFitness() {
-		fitnessValue = Fitness.getValue(this);
+	void setFitnessValue(int fitnessValue) {
+		this.fitnessValue = fitnessValue;
 	}
 
 	int getFitnessValue() {

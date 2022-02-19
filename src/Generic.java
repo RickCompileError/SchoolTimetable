@@ -8,10 +8,12 @@ public class Generic {
 	Curriculum c1;
 	Curriculum c2;
 	Curriculum offSpring;
+	Fitness fitness;
 
-	Generic(int popularitySize) {
+	Generic(int popularitySize, String filepath) {
 		this.popularitySize = popularitySize;
 		bound = (int)(popularitySize*(1/2.0));
+		fitness = new Fitness(filepath);
 	}
 	
 	Popularity nextGeneration(Popularity popularity) {
@@ -55,7 +57,7 @@ public class Generic {
 			tmp.add(c1.getCourse(i));
 		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
-		offSpring.calcFitness();
+		offSpring.setFitnessValue(calcFitness(offSpring));
 		generation.add(offSpring);
 		tmp = new ArrayList<>();
 		for (int i=0;i<start;i++)
@@ -66,7 +68,7 @@ public class Generic {
 			tmp.add(c2.getCourse(i));
 		offSpring = new Curriculum(tmp,c1.fixedCourses);
 		mutation();
-		offSpring.calcFitness();
+		offSpring.setFitnessValue(calcFitness(offSpring));
 		generation.add(offSpring);
 	}
 
@@ -84,5 +86,9 @@ public class Generic {
                 }
             }
         }
+    }
+    
+    int calcFitness(Curriculum cm) {
+    	return fitness.getValue(cm); 
     }
 }

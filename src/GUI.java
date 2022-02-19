@@ -3,12 +3,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -172,12 +174,19 @@ public class GUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					FileInputStream fis = new FileInputStream(filepath);
+					InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+					BufferedReader br = new BufferedReader(isr);
 					FileOutputStream fos = new FileOutputStream("school_table.csv");
-					// csv file need to write BOM header to indicate that encoding of the file is utf-8
-					fos.write(new byte[] {(byte)0xEF, (byte)0xBB, (byte)0xBF});
 					OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
 					BufferedWriter bw = new BufferedWriter(osw);
-					bw.write("Population\n1\n");
+					while (true) {
+						String line = br.readLine();
+						if (line.matches(".*Fixed.*")) break;
+						bw.write(line.replaceAll(" ",","));
+						bw.newLine();
+					}
+					br.close();
 					bw.write("Fixed (1),Class name,major (0/1),grade (1~5),week (1~5),start,end,teacher name\n");
 					Curriculum curriculum = getBest();
 					for (int i=0;i<curriculum.size();i++) {
@@ -234,14 +243,6 @@ public class GUI extends JFrame{
 					}
 				}
 				sc.close();
-				curriculumFactory = new CurriculumFactory(CourseData.size(), CourseData);
-				popularity = new Popularity();
-				while (popularity.size()<popularitySize)
-					popularity.add(curriculumFactory.getCurriculum());
-				generic = new Generic(popularity.size());
-				popularity.printFitness();
-				printtable();
-				this.filepath = filepath;
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(null,
 						"FileNotFoundException",
@@ -255,6 +256,17 @@ public class GUI extends JFrame{
 						JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
 			}
+			curriculumFactory = new CurriculumFactory(CourseData.size(), CourseData);
+			generic = new Generic(popularitySize,filepath);
+			popularity = new Popularity();
+			while (popularity.size()<popularitySize) {
+				Curriculum cm = curriculumFactory.getCurriculum();
+				cm.setFitnessValue(generic.calcFitness(cm));
+				popularity.add(cm);
+			}
+			popularity.printFitness();
+			printtable();
+			this.filepath = filepath;
 	}
 	
 	private void run() {
@@ -262,7 +274,7 @@ public class GUI extends JFrame{
 			popularity = generic.nextGeneration(popularity);
 			System.out.println("[GUI] the best fitness value in " + i + " generation: "
 									+ getBest().getFitnessValue());
-			if (getBest().getFitnessValue()>0) 
+			if (getBest().getFitnessValue()>50) 
 				break;
 		}
 		printtable();
