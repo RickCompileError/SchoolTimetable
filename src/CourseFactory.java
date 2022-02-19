@@ -15,7 +15,7 @@ public class CourseFactory {
 			int week, start;
 			do {
 				week = MyRandom.rangeInt(1, 5);
-				start = MyRandom.rangeInt(1, 8, 5, Integer.parseInt(s[4])-1);
+				start = MyRandom.rangeInt(1, 8, new int[] {5,10}, Integer.parseInt(s[4])-1);
 			} while(week == 2 && start == 8);
 			return new Course(false,
 					s[1],
