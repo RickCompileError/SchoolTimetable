@@ -178,6 +178,9 @@ public class GUI extends JFrame{
 					InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
 					BufferedReader br = new BufferedReader(isr);
 					FileOutputStream fos = new FileOutputStream("school_table.csv");
+					// csv file need to write BOM header to indicate that encoding of the file is utf-8
+					if (filepath.matches(".*\\.txt"))
+						fos.write(new byte[] {(byte)0xEF, (byte)0xBB, (byte)0xBF});
 					OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
 					BufferedWriter bw = new BufferedWriter(osw);
 					while (true) {
