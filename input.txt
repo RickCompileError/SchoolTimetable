@@ -1,5 +1,18 @@
 Population
 100
+Administrator						
+黃 宜 徐				
+Forbidden						
+王 2 1 4 5 6 9
+孔 1 1 4 5 1 4
+顧 5 1 4 5 6 9
+張 1 1 4 5 1 4
+黃 5 1 4 5 6 9
+徐 1 1 4 5 6 9
+宜 1 1 4 5 6 9
+宗 4 6 9 5 6 9
+賴 2 1 4 3 1 4
+Fixed (1) Class name major (0/1) grade (1~5) week (1~5) start end teacher name
 1 班會課 1 1 2 8 9
 1 班會課 1 2 2 8 9
 1 班會課 1 3 2 8 9
@@ -15,6 +28,7 @@ Population
 1 大二體育 1 2 3 10 11
 1 大二體育 1 2 4 10 11
 1 大三通識 0 3 1 1 4
+Not fixed (0) Class name major (0/1) grade (1~5) total hour (2~3) teacher name
 0 離散數學 1 1 3 顧
 0 數位邏輯設計 1 1 3 黃
 0 數位邏輯設計實驗 1 1 2 黃
